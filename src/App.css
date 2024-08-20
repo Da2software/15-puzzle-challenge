@@ -1,0 +1,164 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.game-container {
+  padding: 1rem;
+  display: grid;
+  flex-direction: row;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.game-panel {
+  padding: 1rem;
+  display: grid;
+  align-items: center;
+  justify-content: start;
+  grid-template-columns: auto auto auto;
+  column-gap: 1rem;
+}
+
+.game-boxparts {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: 100%;
+  border: #f5f5f5 solid 1px;
+  border-radius: 8px;
+  row-gap: 8px;
+  padding: 8px;
+}
+
+.game-boxrow {
+  display: grid;
+  column-gap: 8px;
+}
+
+.game-boxcol {
+  display: grid;
+  border-radius: 8px;
+  border: solid 2px #5e5d5a;
+  background-color: #6fc8e4;
+  color: #353535;
+  align-content: center;
+
+}
+
+.game-boxcol.on-move {
+  animation: moveAnim 5s 2;
+  animation-direction: alternate;
+}
+
+.game-box-draggable {
+  height: inherit;
+  width: inherit;
+  display: inline;
+}
+
+@keyframes moveAnim {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.game-boxcol:hover {
+  border: solid 2px #6fc8e4;
+  background-color: #c4d4da;
+  color: #353535;
+}
+
+.game-boxcol.empty {
+  background-color: transparent;
+  color: transparent;
+}
+
+.game-boxcol.empty:hover {
+  background-color: #e2d4b8;
+  color: #353535;
+}
+
+.game-boxcol.selected {
+  border: none;
+  background-color: #cab9a6;
+  color: #353535;
+}
+
+.btn-reset {
+  width: fit-content;
+  border: 1px solid #f5f5f5c0;
+  background-color: #ad7358aa;
+}
+
+.resolution {
+  margin-right: 1rem;
+}
+
+@media (width >=1000px) {
+  .game-container {
+    min-width: 800px;
+  }
+}
+
+@media (width < 1000px) {
+  .game-container {
+    min-width: 90vw;
+  }
+
+  #root {
+    width: 100vw;
+    padding: 0;
+    margin: 1rem;
+  }
+
+  .game-container {
+    padding: 0;
+  }
+}
