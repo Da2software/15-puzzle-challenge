@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 import Game from './pages/Game';
+import Home from './pages/Home';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,9 +14,9 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} /> */}
-          <Route path="/" element={<Game />} />
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/about" element={<About />} /> */}
+          <Route path="/game" element={<Game />} />
         </Routes>
       </Router>
     </>

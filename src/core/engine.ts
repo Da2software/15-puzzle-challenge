@@ -89,8 +89,11 @@ class BoxParts {
         let zeroPos = { x: this.size - 1, y: this.size - 1 };
         let i = 0;
         while (i < numMoves) {
+            // generate the random move and also check the validation
             const newMove = this.getRandomMove(matrix, zeroPos);
+            // then do the switch/move
             this.switchParts(matrix, zeroPos, newMove);
+            // update the zero value position base on the new position
             zeroPos = newMove;
             i++;
         }
