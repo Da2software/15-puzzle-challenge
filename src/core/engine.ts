@@ -18,7 +18,7 @@ class BoxParts {
     private solution: number[] = [];
     // private randomizer = new Randomizer2D();
     constructor(size = 4) {
-        if (size < 3) throw new Error("need at leats 3x3 matrix size");
+        if (size < 2) throw new Error("need at leats 2x2 matrix size");
         this.size = size;
     }
     build() {
@@ -138,9 +138,35 @@ class MoveSystem {
     }
 }
 
+type HistoryStore = {}[];
+class HistoryGame {
+    private maxRecords = 10;
+    private history: HistoryStore[] | any = [];
+    private storageKey = "puzzleHistory";
+    constructor() {
+        try {
+            const storage: string | any = localStorage.getItem(this.storageKey);
+            this.history = JSON.parse(storage);
+        } catch (error) {
+            this.history = [];
+        }
+    }
+    addNewRecord(record: HistoryStore[]): void {
+        if (this.history.length >= this.maxRecords) {
+            this.history.shift();
+        }
+        this.history.push(record);
+        localStorage.setItem(this.storageKey, this.history);
+    }
+    getHistory(): HistoryStore[] {
+        return this.history;
+    }
+}
+
 export {
     BoxParts,
     MoveSystem,
-    Position2D
+    Position2D,
+    HistoryGame
 };
-export type { IPosition2D };
+export type { IPosition2D, HistoryStore };
