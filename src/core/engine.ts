@@ -138,35 +138,11 @@ class MoveSystem {
     }
 }
 
-type HistoryStore = {}[];
-class HistoryGame {
-    private maxRecords = 10;
-    private history: HistoryStore[] | any = [];
-    private storageKey = "puzzleHistory";
-    constructor() {
-        try {
-            const storage: string | any = localStorage.getItem(this.storageKey);
-            this.history = JSON.parse(storage);
-        } catch (error) {
-            this.history = [];
-        }
-    }
-    addNewRecord(record: HistoryStore[]): void {
-        if (this.history.length >= this.maxRecords) {
-            this.history.shift();
-        }
-        this.history.push(record);
-        localStorage.setItem(this.storageKey, this.history);
-    }
-    getHistory(): HistoryStore[] {
-        return this.history;
-    }
-}
+
 
 export {
     BoxParts,
     MoveSystem,
-    Position2D,
-    HistoryGame
+    Position2D
 };
-export type { IPosition2D, HistoryStore };
+export type { IPosition2D};
