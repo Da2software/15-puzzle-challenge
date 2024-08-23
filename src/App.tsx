@@ -4,6 +4,7 @@ import './App.css'
 
 import Game from './pages/Game';
 import Home from './pages/Home';
+import HistoryPage from './pages/History';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/history" element={<HistoryPage />} />
           <Route path="/game" element={<Game />} />
         </Routes>
       </Router>

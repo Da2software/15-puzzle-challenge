@@ -17,7 +17,7 @@ class BoxParts {
     area: number[][] = [];
     private solution: number[] = [];
     // private randomizer = new Randomizer2D();
-    constructor(size = 4) {
+    constructor(size = 3) {
         if (size < 2) throw new Error("need at leats 2x2 matrix size");
         this.size = size;
     }

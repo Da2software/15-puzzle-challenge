@@ -2,6 +2,7 @@ import React, { DOMElement, useEffect, useRef, useState } from "react";
 import { BoxParts, IPosition2D, MoveSystem, Position2D } from "../core/engine";
 import { PartNormalComponent, PartEmptyComponent } from "../core/PartComponent";
 import { useNavigate } from "react-router-dom";
+import { Timer, useHistoryStore } from "../core/storages";
 
 import PartMove from "../assets/PartMove.mp3";
 import PartClick from "../assets/PartClick.mp3";
@@ -13,6 +14,7 @@ function Game() {
   const [size, setSize] = useState<number | any>(null);
   const [boxTable, setBoxTable] = useState<BoxParts | any>(null);
   const [moveSys, setMoveSys] = useState<MoveSystem | any>(null);
+  const { addNewRecord } = useHistoryStore();
 
   // this takes the matix of the puzzle table
   const [area, setArea] = useState<number[][]>([]);
@@ -28,7 +30,7 @@ function Game() {
   // save the engine progress calculation to be render
   const [progress, setProgress] = useState(0);
   // this saves the timer
-  const [timeCheck, setTimeCheck] = useState({
+  const [timeCheck, setTimeCheck] = useState<Timer>({
     seconds: 0,
     minutes: 0,
     hours: 0,
@@ -54,14 +56,14 @@ function Game() {
   useEffect(() => {
     // we need to do this crazy process to get the size from the other page, it is the seme if we use an store library
     // first we set the default storage size
-    let storaSize = 4;
+    let storaSize = 3;
     // then we try to get the size from the localstorage
     try {
       storaSize = Number(localStorage.getItem("size"));
       // then we can update the reactive value, because we use it in other pa
-      setSize(storaSize > 2 ? storaSize : 4);
+      setSize(storaSize > 2 ? storaSize : 3);
     } catch (error) {
-      setSize(4);
+      setSize(3);
     }
     // having ready the size we can use that to run the game engine
     const newBoxParts = new BoxParts(storaSize);
@@ -115,19 +117,20 @@ function Game() {
       setTimer();
     }, 600); // then after a milliseconds later this one renders the table
   };
-
-  const setTimer = () => {
-    // Clear any existing interval
+  const clearTimer = () => {
     if (timerInterval.current) {
       clearInterval(timerInterval.current);
       setTimeCheck({ seconds: 0, minutes: 0, hours: 0 });
     }
+  }
+  const setTimer = () => {
+    // Clear any existing interval
+    clearTimer();
 
     // Start a new interval
     timerInterval.current = setInterval(() => {
       setTimeCheck((prevTimeCheck) => {
         let { seconds, minutes, hours } = prevTimeCheck;
-
         seconds += 1;
         if (seconds === 60) {
           seconds = 0;
@@ -179,6 +182,10 @@ function Game() {
       // if the progress is 1 (100%) that means user solve the puzzle
       if (currProgress === 1) {
         setWon(true);
+        // then save the record
+        addNewRecord({ time: timeCheck, moves: moveSys.getMoves(), size: size });
+        // stop timer
+        clearTimer();
       }
       onMoving = false; // NOTE: maybe this is not needed because is not in the setTimeout anymore
     }

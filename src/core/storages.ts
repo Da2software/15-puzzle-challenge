@@ -5,17 +5,19 @@ const storageKey = "puzzleHistory";
 const getHistory = () => {
   try {
     const storage: string | any = localStorage.getItem(storageKey);
-    return JSON.parse(storage);
+    return storage ? JSON.parse(storage) : [];
   } catch (error) {
     return [];
   }
 };
+type Timer = { seconds: number; minutes: number; hours: number };
 
 type HistoryRecord = {
-  time: { seconds: number; minutes: number; hours: number };
+  time: Timer;
   moves: number;
   size: number;
-}[];
+};
+
 type IHistory = {
   history: HistoryRecord[];
   maxRecords: number;
@@ -24,8 +26,8 @@ type IHistory = {
 
 const useHistoryStore = create<IHistory>((set) => ({
   history: getHistory(),
-  maxRecords: 0,
-  addNewRecord: (record: HistoryRecord) =>
+  maxRecords: 10,
+  addNewRecord: (record: HistoryRecord | any) =>
     set((state) => {
       const currHistory = [...state.history];
       if (currHistory.length >= state.maxRecords) {
@@ -38,4 +40,4 @@ const useHistoryStore = create<IHistory>((set) => ({
 }));
 
 export { useHistoryStore };
-export type { IHistory };
+export type { IHistory, HistoryRecord, Timer };
