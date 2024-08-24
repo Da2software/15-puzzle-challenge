@@ -40,7 +40,7 @@ class BoxParts {
                 return part;
             });
         });
-        this.shuffleArray(this.area);
+        this.shuffleArea();
     }
     getProgress(): number {
         // convert the 2D array into a flatten one
@@ -50,12 +50,19 @@ class BoxParts {
         // then return the percentage
         return intersection.length / this.solution.length;
     }
-
-    private isInBounds(matrix: Matrix, pos: IPosition2D): boolean {
-        // check if we can move to up, down, left, right
-        return pos.x >= 0 && pos.x < matrix.length && pos.y >= 0 && pos.y < matrix[0].length;
+    findZero(): IPosition2D | any {
+        let y = 0;
+        for (const row of this.area) {
+            let x = 0;
+            for (const col of row) {
+                if (col === 0) return { x: x, y: y };
+                x++;
+            }
+            y++;
+        }
+        return null;
     }
-    private getRandomMove(matrix: Matrix, zeroPos: IPosition2D): IPosition2D {
+    getRandomMove(zeroPos: IPosition2D): IPosition2D {
         // set move list
         const moves: IPosition2D[] = [
             { x: -1, y: 0 }, // up
@@ -68,7 +75,7 @@ class BoxParts {
         // then find the valid moves based on the zero value position
         for (const move of moves) {
             const newPos: IPosition2D = { x: zeroPos.x + move.x, y: zeroPos.y + move.y };
-            if (this.isInBounds(matrix, newPos)) {
+            if (this.isInBounds(this.area, newPos)) {
                 validMoves.push(newPos);
             }
         }
@@ -76,23 +83,28 @@ class BoxParts {
         const randomIndex = Math.floor(Math.random() * validMoves.length);
         return validMoves[randomIndex];
     }
+    private isInBounds(matrix: Matrix, pos: IPosition2D): boolean {
+        // check if we can move to up, down, left, right
+        return pos.x >= 0 && pos.x < matrix.length && pos.y >= 0 && pos.y < matrix[0].length;
+    }
+
     private switchParts(matrix: Matrix, pos1: IPosition2D, pos2: IPosition2D): void {
         // Swap the values at the two positions
         const temp = matrix[pos1.x][pos1.y];
         matrix[pos1.x][pos1.y] = matrix[pos2.x][pos2.y];
         matrix[pos2.x][pos2.y] = temp;
     }
-    private shuffleArray(matrix: Matrix): void {
+    private shuffleArea(): void {
         // just create an amout of moves/loops to shuffle the matrix
-        const numMoves = matrix.length * matrix[0].length * 10;
+        const numMoves = this.area.length * this.area[0].length * 10;
         // set the zero value position, must be the down right corner
         let zeroPos = { x: this.size - 1, y: this.size - 1 };
         let i = 0;
         while (i < numMoves) {
             // generate the random move and also check the validation
-            const newMove = this.getRandomMove(matrix, zeroPos);
+            const newMove = this.getRandomMove(zeroPos);
             // then do the switch/move
-            this.switchParts(matrix, zeroPos, newMove);
+            this.switchParts(this.area, zeroPos, newMove);
             // update the zero value position base on the new position
             zeroPos = newMove;
             i++;
@@ -145,4 +157,4 @@ export {
     MoveSystem,
     Position2D
 };
-export type { IPosition2D};
+export type { IPosition2D };

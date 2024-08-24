@@ -1,4 +1,4 @@
-import { HistoryRecord, Timer, useHistoryStore } from "../core/storages";
+import { useHistoryStore } from "../core/storages";
 import { useNavigate } from "react-router-dom";
 
 function HistoryPage() {
@@ -10,6 +10,9 @@ function HistoryPage() {
     };
     return <>
         <h1>History</h1>
+        <button onClick={goHome} className="menu-btn">
+            Back to Home
+        </button>
         <div className="game-container">
             {history.map(record => (
                 <div className="game-record">
@@ -23,9 +26,6 @@ function HistoryPage() {
                 </div>
             ))}
         </div>
-        <button onClick={goHome} className="menu-btn">
-            Back to Home
-        </button>
     </>;
 }
 export default HistoryPage;
